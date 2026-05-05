@@ -1847,7 +1847,7 @@
     <!-- METAS -->
     <section class="section" id="s-metas">
       <div class="section-header">
-        <div class="section-num accent">15A</div>
+        <div class="section-num accent">15</div>
         <div class="section-title-wrap">
           <h2>Metas</h2>
           <div class="section-sub">Logros concretos y medibles del proyecto</div>
@@ -2526,6 +2526,7 @@
         }
         navList.querySelectorAll('li').forEach(l => l.classList.remove('drag-over'));
         syncMain();
+        updateSectionNumbers();
       });
 
       // ── Touch Drag ──
@@ -2578,6 +2579,7 @@
           if (srcIdx < tgtIdx) navList.insertBefore(touchItem, target.nextSibling);
           else navList.insertBefore(touchItem, target);
           syncMain();
+          updateSectionNumbers();
         }
         navList.querySelectorAll('li').forEach(l => l.classList.remove('drag-over'));
         touchItem = null;
@@ -2624,13 +2626,37 @@
       allHighlights = [];
     }
 
+    function updateSectionNumbers() {
+      const items = navList.querySelectorAll('li.draggable-item');
+      items.forEach((li, idx) => {
+        const targetId = li.dataset.target;
+        const section = document.getElementById(targetId);
+        if (section) {
+          const numDiv = section.querySelector('.section-num');
+          if (numDiv) {
+            numDiv.textContent = idx + 1;
+          }
+        }
+      });
+    }
+
     function highlightText(query) {
       removeHighlights();
+      const navItems = navList.querySelectorAll('li.draggable-item');
 
       if (query.length < 2) {
         searchCount.style.display = 'none';
+        navItems.forEach(item => item.style.display = '');
         return;
       }
+
+      // Filtrar sidebar para mostrar solo coincidencias
+      const queryLower = query.toLowerCase();
+      navItems.forEach(item => {
+        const link = item.querySelector('a');
+        const text = link ? link.textContent.toLowerCase() : '';
+        item.style.display = text.includes(queryLower) ? '' : 'none';
+      });
 
       const regex = new RegExp(`(${query})`, 'gi');
       const walker = document.createTreeWalker(
