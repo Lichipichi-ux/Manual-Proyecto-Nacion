@@ -1,0 +1,2816 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de Procedimientos · Proyecto Nación 2026</title>
+  <style>
+    :root {
+      --primary: #1a3a34;
+      --primary-light: #2d5450;
+      --primary-pale: #e8f1f0;
+      --secondary: #8b6f47;
+      --secondary-pale: #f5f0e8;
+      --accent: #a89070;
+      --text-dark: #2c3e50;
+      --text-mid: #455a64;
+      --text-light: #78909c;
+      --border: #d0d8de;
+      --bg: #fafbfc;
+      --white: #ffffff;
+      --highlight: #fffacd;
+      --sidebar-w: 300px;
+      --radius: 6px;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --transition: 0.2s ease;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      line-height: 1.7;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      width: var(--sidebar-w);
+      height: 100vh;
+      max-height: 100vh;
+      background: var(--primary);
+      color: #b0bcc4;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition);
+    }
+
+    .sidebar-brand {
+      padding: 32px 24px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-brand h2 {
+      font-size: 0.75rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #8fa9b8;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-brand p {
+      font-size: 1rem;
+      color: #e8eef4;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-brand .year-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.1em;
+    }
+
+    .search-wrap {
+      padding: 16px 16px;
+      position: relative;
+    }
+
+    #searchInput {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      padding: 8px 12px 8px 36px;
+      color: #e8eef4;
+      font-size: 0.82rem;
+      font-family: 'Segoe UI', sans-serif;
+      outline: none;
+      transition: all var(--transition);
+    }
+
+    #searchInput::placeholder {
+      color: #7a8fa0;
+    }
+
+    #searchInput:focus {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7a8fa0;
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    #searchCount {
+      font-size: 0.7rem;
+      color: var(--accent);
+      font-family: 'Segoe UI', sans-serif;
+      padding: 6px 16px 0;
+      display: none;
+      font-weight: 500;
+    }
+
+    #navList {
+      list-style: none;
+      padding: 8px 12px 20px;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    #navList li a {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 12px;
+      border-radius: 4px;
+      color: #a6b8c4;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.4;
+      transition: all var(--transition);
+    }
+
+    #navList li a:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #dfe7ef;
+    }
+
+    #navList li a.active {
+      background: var(--primary-light);
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    /* ── SCROLLBAR ── */
+    #sidebar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #sidebar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      transition: background var(--transition);
+    }
+
+    #sidebar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    #navList::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #navList::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #navList::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    #navList::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* ── MAIN ── */
+    #main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      max-width: 1000px;
+      padding: 0 48px 80px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 56px 0 40px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 48px;
+    }
+
+    .hero .overline {
+      font-size: 0.75rem;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-dark);
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      color: var(--primary);
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .hero .hero-meta {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .hero-meta-item .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .hero-meta-item .dot.secondary {
+      background: var(--secondary);
+    }
+
+    .hero-meta-item .dot.accent {
+      background: var(--accent);
+    }
+
+    .hero-ambitos {
+      margin-top: 28px;
+      background: var(--primary-pale);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .hero-ambitos h3 {
+      font-size: 0.73rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .ambito-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .ambito-tag {
+      background: var(--white);
+      border: 1px solid rgba(26, 58, 52, 0.2);
+      border-radius: 4px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--primary);
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding-top: 28px;
+      margin-bottom: 52px;
+      scroll-margin-top: 80px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      min-width: 42px;
+      height: 42px;
+      background: var(--primary);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .section-num.secondary {
+      background: var(--secondary);
+    }
+
+    .section-num.accent {
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .section-title-wrap {
+      flex: 1;
+    }
+
+    .section-title-wrap h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.3;
+    }
+
+    .section-title-wrap .section-sub {
+      font-size: 0.77rem;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text-light);
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-label {
+      font-size: 0.68rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+    }
+
+    .card-label.secondary {
+      color: var(--secondary);
+    }
+
+    .card-label.accent {
+      color: var(--accent);
+    }
+
+    .card-label.text {
+      color: var(--text-mid);
+    }
+
+    .card p,
+    .card li {
+      font-size: 0.93rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    .card ul {
+      padding-left: 20px;
+    }
+
+    .card ul li {
+      margin-bottom: 8px;
+    }
+
+    /* ── STEPS LIST ── */
+    .steps-list {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+    }
+
+    .steps-list li {
+      counter-increment: step;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      font-size: 0.93rem;
+      color: var(--text-mid);
+    }
+
+    .steps-list li::before {
+      content: counter(step);
+      min-width: 26px;
+      height: 26px;
+      background: var(--primary-pale);
+      color: var(--primary);
+      border-radius: 50%;
+      font-weight: 600;
+      font-size: 0.75rem;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── EXAMPLE BLOCK ── */
+    .example-block {
+      background: var(--secondary-pale);
+      border-radius: var(--radius);
+      border-left: 3px solid var(--secondary);
+      padding: 16px 20px;
+      margin-top: 12px;
+    }
+
+    .example-block .ex-label {
+      font-size: 0.68rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+
+    .example-block p {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    /* ── RELATION BLOCK ── */
+    .relation-block {
+      background: var(--primary-pale);
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .relation-block .rel-icon {
+      font-size: 0.95rem;
+      margin-top: 2px;
+      color: var(--primary);
+    }
+
+    .relation-block p {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 500;
+    }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      display: flex;
+      gap: 12px;
+      background: #eff8ff;
+      border-radius: 4px;
+      border-left: 3px solid #2196f3;
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+
+    .info-box .info-icon {
+      font-size: 1rem;
+      margin-top: 2px;
+      color: #1976d2;
+    }
+
+    .info-box p {
+      font-size: 0.87rem;
+      color: #0d47a1;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* ── APA SECTION ── */
+    #apa-section {
+      background: #fafbfc;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 32px;
+      margin-bottom: 56px;
+      scroll-margin-top: 80px;
+    }
+
+    #apa-section .apa-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .apa-icon-wrap {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      color: var(--white);
+    }
+
+    #apa-section h2 {
+      font-size: 1.4rem;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    #apa-section .apa-badge {
+      display: inline-block;
+      background: #d32f2f;
+      color: white;
+      font-size: 0.62rem;
+      font-weight: 600;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 3px 9px;
+      border-radius: 2px;
+      letter-spacing: 0.1em;
+      margin-left: 8px;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+
+    .mandatory-box {
+      background: var(--primary);
+      color: #e8eef4;
+      border-radius: 4px;
+      padding: 20px 22px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mandatory-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .mandatory-box h3 {
+      font-size: 0.73rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--accent);
+      margin-bottom: 12px;
+      padding-left: 6px;
+      font-weight: 600;
+    }
+
+    .mandatory-box p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      padding-left: 6px;
+      color: #cbd5e0;
+    }
+
+    .mandatory-box strong {
+      color: #fff;
+    }
+
+    /* ── TABLES ── */
+    .apa-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      font-family: 'Segoe UI', sans-serif;
+      margin-top: 16px;
+    }
+
+    .apa-table th {
+      background: var(--primary);
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+
+    .apa-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-mid);
+      vertical-align: top;
+    }
+
+    .apa-table tr:nth-child(even) td {
+      background: var(--primary-pale);
+    }
+
+    .apa-table code {
+      background: #f5f7fa;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82em;
+      color: var(--secondary);
+    }
+
+    /* ── CONFIG GRID ── */
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .config-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .config-item .ci-val {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      font-family: 'Segoe UI', sans-serif;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .config-item .ci-label {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      font-family: 'Segoe UI', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+    }
+
+    /* ── PILLS ── */
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .pill {
+      padding: 5px 12px;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .pill-primary {
+      background: var(--primary-pale);
+      color: var(--primary);
+      border: 1px solid rgba(26, 58, 52, 0.2);
+    }
+
+    .pill-secondary {
+      background: var(--secondary-pale);
+      color: var(--secondary);
+      border: 1px solid rgba(139, 111, 71, 0.2);
+    }
+
+    .pill-accent {
+      background: #f5f0e8;
+      color: var(--accent);
+      border: 1px solid rgba(168, 144, 112, 0.3);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+      margin: 20px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      background: var(--white);
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -27px;
+      top: 15px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .tl-item h4 {
+      font-size: 0.78rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .tl-item p {
+      font-size: 0.87rem;
+      color: var(--text-mid);
+    }
+
+    /* ── UTILITIES ── */
+    mark.search-hl {
+      background: var(--highlight);
+      border-radius: 2px;
+      padding: 0 2px;
+      color: inherit;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 0 48px;
+      color: var(--text-light);
+      font-size: 0.78rem;
+      font-family: 'Segoe UI', sans-serif;
+      border-top: 1px solid var(--border);
+      margin-top: 28px;
+    }
+
+    footer strong {
+      color: var(--primary);
+    }
+
+    /* ── MOBILE TOGGLE ── */
+    #menuToggle {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 200;
+      background: var(--primary);
+      border: none;
+      border-radius: 4px;
+      padding: 10px;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+      box-shadow: var(--shadow);
+      font-weight: 600;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 90;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      :root {
+        --sidebar-w: 0;
+      }
+
+      body {
+        flex-direction: column;
+      }
+
+      #sidebar {
+        width: 100%;
+        max-width: 320px;
+        height: 100vh;
+        max-height: 100vh;
+        transform: translateX(-100%);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.12);
+        z-index: 101;
+      }
+
+      #sidebar.open {
+        transform: translateX(0);
+      }
+
+      #main {
+        margin-left: 0;
+        padding: 70px 24px 60px;
+      }
+
+      #menuToggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero {
+        padding: 36px 0 28px;
+      }
+
+      .hero h1 {
+        font-size: 1.7rem;
+      }
+
+      .config-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .apa-table {
+        font-size: 0.8rem;
+      }
+
+      #apa-section {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #main {
+        padding: 70px 16px 50px;
+      }
+
+      .hero {
+        padding: 24px 0 20px;
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        font-size: 1.4rem;
+        line-height: 1.3;
+      }
+
+      .hero .overline {
+        font-size: 0.72rem;
+        margin-bottom: 8px;
+      }
+
+      .hero .hero-meta {
+        gap: 14px;
+      }
+
+      .hero-meta-item {
+        font-size: 0.76rem;
+      }
+
+      .hero-ambitos {
+        padding: 14px 16px;
+        margin-top: 18px;
+      }
+
+      .hero-ambitos h3 {
+        font-size: 0.7rem;
+        margin-bottom: 8px;
+      }
+
+      .ambito-tag {
+        font-size: 0.72rem;
+        padding: 4px 10px;
+      }
+
+      .section {
+        margin-bottom: 36px;
+      }
+
+      .section-header {
+        gap: 10px;
+      }
+
+      .section-num {
+        width: 36px;
+        height: 36px;
+        font-size: 0.75rem;
+      }
+
+      .section-title-wrap h2 {
+        font-size: 1.2rem;
+      }
+
+      .section-title-wrap .section-sub {
+        font-size: 0.72rem;
+      }
+
+      .card {
+        padding: 16px 14px;
+        margin-bottom: 14px;
+      }
+
+      .card-label {
+        font-size: 0.65rem;
+      }
+
+      .card p {
+        font-size: 0.87rem;
+        line-height: 1.6;
+      }
+
+      .steps-list li {
+        gap: 10px;
+        font-size: 0.87rem;
+        margin-bottom: 10px;
+      }
+
+      .steps-list li::before {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+      }
+
+      .example-block {
+        padding: 12px 14px;
+      }
+
+      .example-block .ex-label {
+        font-size: 0.63rem;
+      }
+
+      .example-block p {
+        font-size: 0.83rem;
+      }
+
+      .relation-block {
+        padding: 10px 12px;
+        gap: 8px;
+      }
+
+      .relation-block p {
+        font-size: 0.78rem;
+      }
+
+      .info-box {
+        padding: 12px 14px;
+      }
+
+      .info-box p {
+        font-size: 0.8rem;
+      }
+
+      .pill-row {
+        gap: 6px;
+      }
+
+      .pill {
+        padding: 3px 9px;
+        font-size: 0.68rem;
+      }
+
+      .config-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .config-item {
+        padding: 10px 12px;
+      }
+
+      .config-item .ci-val {
+        font-size: 1rem;
+      }
+
+      .config-item .ci-label {
+        font-size: 0.65rem;
+      }
+
+      .apa-table {
+        font-size: 0.72rem;
+        margin-top: 12px;
+      }
+
+      .apa-table th,
+      .apa-table td {
+        padding: 6px 8px;
+      }
+
+      #apa-section {
+        padding: 16px;
+      }
+
+      #apa-section h2 {
+        font-size: 1.1rem;
+      }
+
+      .apa-header {
+        gap: 10px;
+      }
+
+      .apa-icon-wrap {
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
+      }
+
+      .timeline {
+        padding-left: 24px;
+      }
+
+      .tl-item {
+        padding: 10px 12px;
+      }
+
+      .tl-item::before {
+        left: -21px;
+        width: 10px;
+        height: 10px;
+      }
+
+      .tl-item h4 {
+        font-size: 0.73rem;
+        margin-bottom: 2px;
+      }
+
+      .tl-item p {
+        font-size: 0.82rem;
+      }
+
+      .mandatory-box {
+        padding: 14px 16px;
+      }
+
+      .mandatory-box h3 {
+        font-size: 0.68rem;
+        margin-bottom: 8px;
+      }
+
+      .mandatory-box p {
+        font-size: 0.82rem;
+      }
+
+      footer {
+        padding: 20px 0 32px;
+        font-size: 0.65rem;
+        line-height: 1.4;
+      }
+    }
+
+    @media (max-width: 360px) {
+      #main {
+        padding: 66px 12px 48px;
+      }
+
+      .hero h1 {
+        font-size: 1.2rem;
+      }
+
+      .section-title-wrap h2 {
+        font-size: 1rem;
+      }
+
+      .card {
+        padding: 12px 10px;
+      }
+    }
+
+    /* ── DRAG & DROP VINTAGE ── */
+    #navList li.draggable-item {
+      position: relative;
+      cursor: default;
+    }
+
+    #navList li.draggable-item a {
+      padding-left: 32px;
+    }
+
+    .drag-handle {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #5a7080;
+      font-size: 0.75rem;
+      cursor: grab;
+      user-select: none;
+      letter-spacing: -1px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    #navList li.draggable-item:hover .drag-handle {
+      color: #a0b8c8;
+    }
+
+    #navList li.dragging {
+      opacity: 0.45;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+    }
+
+    #navList li.drag-over {
+      border-top: 2px solid var(--accent);
+    }
+
+    .apa-fixed-label {
+      display: block;
+      font-size: 0.62rem;
+      font-family: 'Segoe UI', sans-serif;
+      color: #6a8090;
+      letter-spacing: 0.08em;
+      padding: 2px 12px 6px;
+      text-transform: uppercase;
+      margin-top: 4px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    /* Vintage card style for reordered sections */
+    .section.vintage-card {
+      background: #fdf9f3;
+      border: 1px solid #d5cbb8;
+      border-radius: 6px;
+      padding: 24px;
+      margin-bottom: 52px;
+      box-shadow: 2px 3px 8px rgba(100, 80, 40, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      position: relative;
+    }
+
+    #reorder-hint {
+      font-size: 0.68rem;
+      color: #8fa0a8;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 4px 12px 10px;
+      font-style: italic;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button id="menuToggle">Menu</button>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-brand">
+      <h2>Ministerio de Educación</h2>
+      <p>Proyecto Nación 2026</p>
+      <span class="year-badge">SEMINARIO ETAPA II</span>
+    </div>
+
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar en el manual">
+    </div>
+    <div id="searchCount"></div>
+
+
+    <ul id="navList">
+      <li><a href="#inicio" class="active">Inicio</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-portada"><span class="drag-handle">⋮⋮</span><a
+          href="#s-portada">Portada</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-dedicatoria"><span class="drag-handle">⋮⋮</span><a
+          href="#s-dedicatoria">Dedicatoria</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-agradecimientos"><span class="drag-handle">⋮⋮</span><a
+          href="#s-agradecimientos">Agradecimientos</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-indice"><span class="drag-handle">⋮⋮</span><a
+          href="#s-indice">Índice</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-introduccion"><span class="drag-handle">⋮⋮</span><a
+          href="#s-introduccion">Introducción</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-nacion"><span class="drag-handle">⋮⋮</span><a
+          href="#s-nacion">Nación y Proyecto de Nación</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-ciudadania"><span class="drag-handle">⋮⋮</span><a
+          href="#s-ciudadania">Ciudadanía</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-marco-ddhh"><span class="drag-handle">⋮⋮</span><a
+          href="#s-marco-ddhh">Marco Teórico: Derechos Humanos</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-vision"><span class="drag-handle">⋮⋮</span><a
+          href="#s-vision">Visión de Nación</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-ambitos"><span class="drag-handle">⋮⋮</span><a
+          href="#s-ambitos">Ámbitos para la Investigación</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-identificacion"><span class="drag-handle">⋮⋮</span><a
+          href="#s-identificacion">Identificación del Problema</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-pregunta"><span class="drag-handle">⋮⋮</span><a
+          href="#s-pregunta">Pregunta Inicial</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-delimitacion"><span class="drag-handle">⋮⋮</span><a
+          href="#s-delimitacion">Delimitación</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-planteamiento"><span class="drag-handle">⋮⋮</span><a
+          href="#s-planteamiento">Planteamiento del Problema</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-justificacion"><span class="drag-handle">⋮⋮</span><a
+          href="#s-justificacion">Justificación</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-metas"><span class="drag-handle">⋮⋮</span><a
+          href="#s-metas">Metas</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-preguntas-inv"><span class="drag-handle">⋮⋮</span><a
+          href="#s-preguntas-inv">Formulación de Preguntas</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-obj-general"><span class="drag-handle">⋮⋮</span><a
+          href="#s-obj-general">Objetivo General</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-obj-especificos"><span class="drag-handle">⋮⋮</span><a
+          href="#s-obj-especificos">Objetivos Específicos</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-hipotesis"><span class="drag-handle">⋮⋮</span><a
+          href="#s-hipotesis">Hipótesis</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-metodologia"><span class="drag-handle">⋮⋮</span><a
+          href="#s-metodologia">Metodología de la Investigación</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-descripcion"><span class="drag-handle">⋮⋮</span><a
+          href="#s-descripcion">Descripción o Relatoría</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-resultados"><span class="drag-handle">⋮⋮</span><a
+          href="#s-resultados">Resultados de la Acción</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-cronogramas"><span class="drag-handle">⋮⋮</span><a
+          href="#s-cronogramas">Cronogramas</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-propuesta"><span class="drag-handle">⋮⋮</span><a
+          href="#s-propuesta">Propuesta del Proyecto</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-plan-accion"><span class="drag-handle">⋮⋮</span><a
+          href="#s-plan-accion">Plan de Acción</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-conclusiones"><span class="drag-handle">⋮⋮</span><a
+          href="#s-conclusiones">Conclusiones y Recomendaciones</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-referencias"><span class="drag-handle">⋮⋮</span><a
+          href="#s-referencias">Referencias</a></li>
+      <li class="draggable-item" draggable="true" data-target="s-anexos"><span class="drag-handle">⋮⋮</span><a
+          href="#s-anexos">Anexos</a></li>
+
+      <li><a href="#apa-section">Normas APA 7ª Edición</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="overline">Manual de Procedimientos</div>
+      <h1>Proyecto <em>Nación</em> 2026</h1>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><span class="dot"></span>Tema General: Ciudadanía</div>
+      </div>
+      <div class="hero-ambitos">
+        <h3>Ámbitos de Investigación Disponibles</h3>
+        <div class="ambito-list">
+          <span class="ambito-tag">Ciudadanía y Derechos Humanos</span>
+          <span class="ambito-tag">Corrupción y Derechos Económicos</span>
+          <span class="ambito-tag">Prevención de la Violencia</span>
+          <span class="ambito-tag">Educación Financiera</span>
+          <span class="ambito-tag">Protección del Ecosistema</span>
+        </div>
+      </div>
+
+      <div style="margin-top:26px;">
+        <div class="card" style="border-left:3px solid var(--primary); padding:18px 22px;">
+          <div class="card-label primary"><span>I</span> Propósito del Manual</div>
+          <p>Este manual proporciona una guía estructurada y completa para el desarrollo del Proyecto Nación. Describe
+            cada sección requerida, su propósito, contenidos esperados y ejemplos orientativos. Acceda a las secciones
+            mediante el menú lateral o utilice la función de búsqueda para encontrar términos específicos.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <div class="timeline">
+          <div class="tl-item">
+            <h4>Semanas 1-2</h4>
+            <p>Conceptos fundamentales: nación, ciudadanía, derechos humanos. Selección de ámbito de investigación.</p>
+          </div>
+          <div class="tl-item">
+            <h4>Semana 3</h4>
+            <p>Definición de ámbito investigativo y redacción de la Visión de Nación.</p>
+          </div>
+          <div class="tl-item">
+            <h4>Semana 4</h4>
+            <p>Metodología: problema, objetivos, hipótesis y diseño de investigación.</p>
+          </div>
+          <div class="tl-item">
+            <h4>Semanas 5-7</h4>
+            <p>Redacción del informe: marco conceptual, metas, estrategias y plan de acción.</p>
+          </div>
+          <div class="tl-item" style="border-left:2px solid var(--secondary);">
+            <h4>Semana 8</h4>
+            <p>Presentación pública del Proyecto de Nación.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTADA -->
+    <section class="section" id="s-portada">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-title-wrap">
+          <h2>Portada</h2>
+          <div class="section-sub">Primera página formal del informe</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Es la primera página del documento y contiene información de identificación del proyecto, el centro educativo
+          e integrantes del grupo.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Contenidos Requeridos</div>
+        <ol class="steps-list">
+          <li>Nombre oficial del Ministerio de Educación y centro educativo</li>
+          <li>Nivel educativo y carrera</li>
+          <li>Título completo del Proyecto de Nación</li>
+          <li>Nombres completos de integrantes del grupo y clave</li>
+          <li>Nombre del docente asesor</li>
+          <li>Lugar y fecha de entrega</li>
+        </ol>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo de Portada</div>
+        <p>Ministerio de Educación<br>Dirección Departamental de Educación<br>Instituto Nacional de Educación Básica
+          "Juan Chapín"<br><br>PROYECTO DE NACIÓN: PREVENCIÓN DE LA VIOLENCIA EN COMUNIDADES
+          RURALES<br><br>Integrantes:<br>- María Fernanda López Pérez (Clave 15)<br>- Juan Pablo García Rivera (Clave
+          08)<br>Docente Asesor: Lic. Ana Morales<br><br>Guatemala, 25 de octubre de 2026</p>
+      </div>
+    </section>
+
+    <!-- DEDICATORIA -->
+    <section class="section" id="s-dedicatoria">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div class="section-title-wrap">
+          <h2>Dedicatoria</h2>
+          <div class="section-sub">Reconocimiento personal del equipo</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Texto breve donde el equipo expresa de forma personal a quién dedica su trabajo. Es un reconocimiento humano
+          que abre el documento formal.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Recomendaciones</div>
+        <ul>
+          <li>Redactar en primera persona plural (3 a 5 líneas)</li>
+          <li>Mencionar personas, instituciones o ideales que inspiraron el trabajo</li>
+          <li>Mantener tono respetuoso y sincero</li>
+          <li>No debe ser extenso ni casual</li>
+        </ul>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>Dedicamos este proyecto a todas las personas que en Guatemala luchan por el respeto de los derechos humanos,
+          con la esperanza de contribuir a una nación más justa y equitativa.</p>
+      </div>
+    </section>
+
+    <!-- AGRADECIMIENTOS -->
+    <section class="section" id="s-agradecimientos">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div class="section-title-wrap">
+          <h2>Agradecimientos</h2>
+          <div class="section-sub">Reconocimiento a instituciones y personas</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Sección donde se reconoce a las personas e instituciones que apoyaron la investigación: docentes, directores,
+          entrevistados, participantes.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Elementos a Incluir</div>
+        <ul>
+          <li>Docente guía con nombre completo</li>
+          <li>Centro educativo (nombre oficial)</li>
+          <li>Participantes en trabajos de campo o entrevistas</li>
+          <li>Familias y apoyo institucional</li>
+        </ul>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>A [Institución] por facilitar las herramientas para este proyecto. A nuestra docente Lic. Ana Morales por su
+          acompañamiento continuo. A nuestras familias por el apoyo incondicional brindado durante el desarrollo del
+          trabajo.</p>
+      </div>
+    </section>
+
+    <!-- ÍNDICE -->
+    <section class="section" id="s-indice">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div class="section-title-wrap">
+          <h2>Índice</h2>
+          <div class="section-sub">Organización del contenido</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Lista organizada de todas las secciones del informe indicando el número de página donde inicia cada una.
+          Facilita la navegación y comprensión de la estructura del documento.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones</div>
+        <ol class="steps-list">
+          <li>Utilizar la función automática de "Tabla de Contenido" en Microsoft Word</li>
+          <li>Asegurar que todos los títulos (H1, H2, H3) estén correctamente configurados</li>
+          <li>Verificar que números de página sean precisos</li>
+          <li>Colocar después de la Portada y Agradecimientos</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- INTRODUCCIÓN -->
+    <section class="section" id="s-introduccion">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div class="section-title-wrap">
+          <h2>Introducción</h2>
+          <div class="section-sub">Contexto y propósito del proyecto</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Primera sección sustantiva que presenta el propósito del Proyecto de Nación, la relevancia del tema
+          investigado, y una breve descripción de la estructura del informe. Es la primera impresión de contenido.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Componentes</div>
+        <ul>
+          <li>Contextualización sobre el tema general (Ciudadanía y Derechos Humanos)</li>
+          <li>Descripción breve del problema central abordado</li>
+          <li>Importancia del estudio para la comunidad y el país</li>
+          <li>Estructura general del documento</li>
+        </ul>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>El presente Proyecto de Nación aborda la problemática de la violencia en el municipio de Fraijanes desde la
+          perspectiva de la educación y los Derechos Humanos. La participación ciudadana activa es crucial para
+          enfrentar este desafío. Este estudio analiza cómo las estrategias educativas pueden fomentar una cultura de
+          paz entre los jóvenes, estableciendo propuestas concretas para mejorar la convivencia escolar.</p>
+      </div>
+    </section>
+
+    <!-- NACIÓN Y PROYECTO DE NACIÓN -->
+    <section class="section" id="s-nacion">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div class="section-title-wrap">
+          <h2>Nación y Proyecto de Nación</h2>
+          <div class="section-sub">Fundamentos conceptuales</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Concepto de Nación</div>
+        <p>Una Nación se refiere a un conjunto de personas unidas por lazos históricos, culturales, lingüísticos y de
+          origen que comparten un sentido de pertenencia e identidad colectiva. No siempre coincide con las fronteras
+          políticas de un Estado.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Qué es un Proyecto de Nación</div>
+        <p>Es una propuesta ciudadana elaborada por estudiantes de nivel medio que busca identificar y abordar problemas
+          nacionales relevantes. Su objetivo es generar soluciones viables y fomentar la participación activa para la
+          construcción de una Guatemala más justa, fundamentada en los Derechos Humanos.</p>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo de Descripción</div>
+        <p>Guatemala es una nación caracterizada por su riqueza multicultural y multilingüe. El Proyecto de Nación
+          representa una oportunidad para que los estudiantes analicen críticamente la realidad guatemalteca y propongan
+          alternativas innovadoras, promoviendo así una ciudadanía activa y comprometida con el desarrollo del país.</p>
+      </div>
+    </section>
+
+    <!-- CIUDADANÍA -->
+    <section class="section" id="s-ciudadania">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div class="section-title-wrap">
+          <h2>Ciudadanía</h2>
+          <div class="section-sub">Rol activo en la sociedad</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Definición de Ciudadanía</div>
+        <p>La ciudadanía es el estatus legal y político que otorga derechos y deberes a los individuos dentro de una
+          comunidad política. Implica la participación activa en la vida pública y la capacidad de influir en decisiones
+          que afectan a la sociedad.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Ciudadanía y Derechos Humanos</div>
+        <p>La ciudadanía y los Derechos Humanos están intrínsecamente ligados. Los Derechos Humanos son la base para el
+          ejercicio pleno de la ciudadanía, garantizando la dignidad, libertad y participación de todas las personas sin
+          distinción.</p>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>Ser ciudadano implica el ejercicio de derechos como votar y participar en decisiones públicas, así como el
+          cumplimiento de deberes hacia la comunidad. Una ciudadanía activa es fundamental para una democracia sólida y
+          el respeto efectivo de los Derechos Humanos.</p>
+      </div>
+    </section>
+
+    <!-- MARCO TEÓRICO: DERECHOS HUMANOS -->
+    <section class="section" id="s-marco-ddhh">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <div class="section-title-wrap">
+          <h2>Marco Teórico: Derechos Humanos</h2>
+          <div class="section-sub">Fundamentos del tema eje 2026</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Características de los Derechos Humanos</div>
+        <p>Los Derechos Humanos poseen características fundamentales: son universales (pertenecen a todas las personas),
+          inalienables (no pueden ser arrebatados), indivisibles e interdependientes (la realización de un derecho
+          depende de otros).</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Generaciones de Derechos Humanos</div>
+        <ul>
+          <li><strong>Primera Generación:</strong> Derechos civiles y políticos (libertad de expresión, derecho al voto,
+            derecho a la vida)</li>
+          <li><strong>Segunda Generación:</strong> Derechos económicos, sociales y culturales (derecho al trabajo,
+            educación, salud)</li>
+          <li><strong>Tercera Generación:</strong> Derechos de los pueblos o solidaridad (derecho a un medio ambiente
+            sano, paz, desarrollo)</li>
+          <li><strong>Cuarta Generación:</strong> Derechos relacionados con tecnología (privacidad digital, acceso a
+            internet)</li>
+        </ul>
+      </div>
+      <div class="relation-block">
+        <span class="rel-icon">Conexión:</span>
+        <p>Estos conceptos proporcionan el fundamento teórico para analizar el problema identificado desde la
+          perspectiva de los Derechos Humanos y la ciudadanía activa.</p>
+      </div>
+    </section>
+
+    <!-- VISIÓN DE NACIÓN -->
+    <section class="section" id="s-vision">
+      <div class="section-header">
+        <div class="section-num accent">9</div>
+        <div class="section-title-wrap">
+          <h2>Visión de Nación</h2>
+          <div class="section-sub">El Guatemala que queremos construir</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Es la descripción de un futuro ideal para Guatemala, un estado deseado de la nación en un horizonte temporal
+          específico. Representa las aspiraciones del grupo en relación con los valores, principios y condiciones de
+          vida que desean ver consolidados.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Elementos a Incluir</div>
+        <ul>
+          <li>Descripción de Guatemala en el futuro (2035-2040) si el problema fuera resuelto</li>
+          <li>Aspectos de paz, justicia, equidad y desarrollo sostenible</li>
+          <li>Respeto a los Derechos Humanos y diversidad cultural</li>
+          <li>Tono positivo y propositivo</li>
+        </ul>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>Imaginamos una Guatemala próspera y justa para el año 2040, donde la educación sea el pilar del desarrollo,
+          garantizando oportunidades equitativas para todos sus ciudadanos. Un país donde la violencia haya sido
+          erradicada gracias a una cultura de paz arraigada en las escuelas y comunidades, donde cada individuo ejerza
+          plenamente sus Derechos Humanos.</p>
+      </div>
+    </section>
+
+    <!-- ÁMBITOS PARA LA INVESTIGACIÓN -->
+    <section class="section" id="s-ambitos">
+      <div class="section-header">
+        <div class="section-num accent">10</div>
+        <div class="section-title-wrap">
+          <h2>Ámbitos para la Investigación</h2>
+          <div class="section-sub">Temas específicos del proyecto</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Son las áreas temáticas predefinidas por el Ministerio de Educación dentro de las cuales se debe identificar
+          un problema para el Proyecto de Nación. Garantizan que los proyectos aborden problemáticas relevantes para
+          Guatemala.</p>
+      </div>
+      <div class="hero-ambitos">
+        <h3>Ámbitos Disponibles (Seleccione uno)</h3>
+        <div class="ambito-list">
+          <span class="ambito-tag">Ciudadanía y Derechos Humanos</span>
+          <span class="ambito-tag">Corrupción y Derechos Económicos</span>
+          <span class="ambito-tag">Prevención de la Violencia</span>
+          <span class="ambito-tag">Educación Financiera</span>
+          <span class="ambito-tag">Protección del Ecosistema</span>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-label secondary">Instrucciones</div>
+        <ol class="steps-list">
+          <li>Elegir uno de los cinco ámbitos disponibles</li>
+          <li>Justificar la elección del ámbito</li>
+          <li>Explicar la relación con la situación guatemalteca actual</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- IDENTIFICACIÓN DEL PROBLEMA -->
+    <section class="section" id="s-identificacion">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div class="section-title-wrap">
+          <h2>Identificación del Problema</h2>
+          <div class="section-sub">Punto de partida de la investigación</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Es el proceso de reconocer y nombrar claramente la situación problemática que se desea estudiar dentro del
+          ámbito de investigación elegido. Responde a la pregunta: ¿Qué problema real existe en mi comunidad o país
+          relacionado con los Derechos Humanos?</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Procedimiento</div>
+        <ol class="steps-list">
+          <li>Realizar lluvia de ideas sobre problemas observados en la comunidad</li>
+          <li>Revisar noticias, reportes e informes académicos sobre el ámbito elegido</li>
+          <li>Analizar si el problema es investigable y tiene fuentes confiables</li>
+          <li>Redactar descripción clara del problema (2-4 oraciones)</li>
+        </ol>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>En Guatemala, la violencia afecta significativamente a las comunidades escolares, impidiendo que los
+          estudiantes desarrollen su potencial educativo. Esta situación refleja la limitación del derecho a una
+          educación segura y el ejercicio pleno de la ciudadanía, particularmente en municipios rurales donde hay menos
+          recursos de protección.</p>
+      </div>
+    </section>
+
+    <!-- PREGUNTA INICIAL -->
+    <section class="section" id="s-pregunta">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <div class="section-title-wrap">
+          <h2>Pregunta Inicial</h2>
+          <div class="section-sub">La brújula de toda la investigación</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Es la pregunta orientadora inicial que define el núcleo del estudio. Debe ser clara, específica y comprobable
+          a través de investigación.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Características</div>
+        <ul>
+          <li>Partir del problema identificado y convertirlo en pregunta</li>
+          <li>Usar verbos: "¿Cómo...?", "¿Qué...?", "¿Cuál es el impacto de...?"</li>
+          <li>Debe ser específica, no demasiado amplia</li>
+          <li>Debe permitir análisis, no solo respuestas de sí/no</li>
+        </ul>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>¿Cómo puede la educación en Guatemala ser utilizada efectivamente para prevenir la violencia y promover una
+          cultura de paz en las escuelas y comunidades del municipio de Fraijanes?</p>
+      </div>
+    </section>
+
+    <!-- DELIMITACIÓN -->
+    <section class="section" id="s-delimitacion">
+      <div class="section-header">
+        <div class="section-num">13</div>
+        <div class="section-title-wrap">
+          <h2>Delimitación</h2>
+          <div class="section-sub">Alcance: dónde, cuándo, con quiénes</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Establece con precisión el alcance temporal, geográfico y poblacional de la investigación. Evita que el tema
+          sea demasiado amplio para el tiempo disponible.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Dimensiones de Delimitación</div>
+        <ul>
+          <li><strong>Espacial:</strong> Municipio, departamento o institución específica</li>
+          <li><strong>Temporal:</strong> Período de tiempo abarcado por la investigación</li>
+          <li><strong>Poblacional:</strong> Grupo específico (estudiantes, docentes, padres, etc.)</li>
+          <li><strong>Temática:</strong> Aspecto específico del problema a investigar</li>
+        </ul>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>Esta investigación se centra en estudiantes de educación básica de los institutos nacionales del área urbana
+          del municipio de Fraijanes, durante el ciclo escolar 2026, analizando programas educativos existentes y
+          proponiendo nuevas estrategias para la prevención de la violencia.</p>
+      </div>
+    </section>
+
+    <!-- PLANTEAMIENTO DEL PROBLEMA -->
+    <section class="section" id="s-planteamiento">
+      <div class="section-header">
+        <div class="section-num secondary">14</div>
+        <div class="section-title-wrap">
+          <h2>Planteamiento del Problema</h2>
+          <div class="section-sub">La columna vertebral del proyecto</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Sección crucial que define claramente el asunto a estudiar y justifica por qué es necesario investigarlo.
+          Integra la identificación, formulación, delimitación, justificación y preguntas del problema.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Componentes del Planteamiento</div>
+        <div class="pill-row">
+          <span class="pill pill-primary">Identificación</span>
+          <span class="pill pill-secondary">Formulación</span>
+          <span class="pill pill-primary">Delimitación</span>
+          <span class="pill pill-secondary">Justificación</span>
+          <span class="pill pill-accent">Preguntas de Investigación</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Pasos para Elaborarlo</div>
+        <ol class="steps-list">
+          <li>Describir la situación real a abordar</li>
+          <li>Convertir el problema en una pregunta clara y precisa</li>
+          <li>Establecer límites espaciales, temporales y poblacionales</li>
+          <li>Explicar por qué es importante estudiarlo</li>
+          <li>Formular 2-4 preguntas específicas que guíen el estudio</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- JUSTIFICACIÓN -->
+    <section class="section" id="s-justificacion">
+      <div class="section-header">
+        <div class="section-num">15</div>
+        <div class="section-title-wrap">
+          <h2>Justificación</h2>
+          <div class="section-sub">Por qué vale la pena investigar esto</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Explica la importancia, relevancia y propósito de la investigación. Convence al lector de que el esfuerzo
+          investigativo es valioso y necesario para Guatemala.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Elementos a Incluir</div>
+        <ul>
+          <li>Contexto actual de Guatemala respecto al problema</li>
+          <li>Propósito del proyecto y su relevancia nacional</li>
+          <li>Beneficios para la sociedad (social, económico, cultural)</li>
+          <li>Impacto en educación y participación ciudadana</li>
+          <li>Problemas específicos a abordar</li>
+          <li>Oportunidades de mejora e innovación</li>
+          <li>Llamado a la acción ciudadana</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <span class="info-icon">N</span>
+        <p>Redacte en párrafos máximo de 8 líneas. Utilize lenguaje claro y concreto. Evite afirmaciones genéricas sin
+          argumentos específicos.</p>
+      </div>
+    </section>
+
+    <!-- METAS -->
+    <section class="section" id="s-metas">
+      <div class="section-header">
+        <div class="section-num accent">15</div>
+        <div class="section-title-wrap">
+          <h2>Metas</h2>
+          <div class="section-sub">Logros concretos y medibles del proyecto</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">¿Qué son las Metas?</div>
+        <p>Las metas son objetivos específicos, medibles y alcanzables que representan los logros concretos del proyecto en un plazo determinado. Diferenciadas del objetivo general (más amplio) y los objetivos específicos (pasos metodológicos), las metas definen qué resultados tangibles se espera obtener. Son esenciales para un "Proyecto Nación" porque establecen hitos claros de progreso hacia la transformación social deseada.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Diferenciación de Conceptos</div>
+        <table class="table-basic" style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+          <tr style="background:#f0f4f3; border-bottom:1px solid #d0d8de;">
+            <th style="padding:12px; text-align:left; font-weight:600; color:#1a3a34;">Concepto</th>
+            <th style="padding:12px; text-align:left; font-weight:600; color:#1a3a34;">Definición</th>
+            <th style="padding:12px; text-align:left; font-weight:600; color:#1a3a34;">Ejemplo para Guatemala</th>
+          </tr>
+          <tr style="border-bottom:1px solid #d0d8de;">
+            <td style="padding:12px;"><strong>Objetivo General</strong></td>
+            <td style="padding:12px;">Propósito amplio y de largo plazo del proyecto</td>
+            <td style="padding:12px;">Fortalecer la cohesión social y la identidad nacional en Guatemala</td>
+          </tr>
+          <tr style="border-bottom:1px solid #d0d8de;">
+            <td style="padding:12px;"><strong>Metas</strong></td>
+            <td style="padding:12px;">Hitos específicos, medibles, 1-3 años</td>
+            <td style="padding:12px;">Capacitar a 500 líderes comunitarios en 10 municipios para 2027</td>
+          </tr>
+          <tr>
+            <td style="padding:12px;"><strong>Resultados Esperados</strong></td>
+            <td style="padding:12px;">Cambios observables en la población objetivo</td>
+            <td style="padding:12px;">Incrementar participación ciudadana de 15% a 40% en decisiones públicas</td>
+          </tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Tipos de Metas para un Proyecto Nación</div>
+        <div style="margin-top:16px;">
+          <h4 style="color:#1a3a34; margin:16px 0 10px; font-size:0.95rem;">1. Metas Estratégicas (Largo Plazo)</h4>
+          <p style="margin-left:16px; font-size:0.9rem; color:#455a64;">Visión transformacional (3-5 años). Ejemplo: "Establecer modelo nacional de gobernanza participativa en 8 regiones piloto que sea replicable en todo el país."</p>
+          
+          <h4 style="color:#1a3a34; margin:16px 0 10px; font-size:0.95rem;">2. Metas Operativas (Corto Plazo)</h4>
+          <p style="margin-left:16px; font-size:0.9rem; color:#455a64;">Acciones concretas (6-12 meses). Ejemplo: "Crear 5 mesas de diálogo multisectorial (gobierno, sociedad civil, empresa privada) en 3 ciudades principales antes de junio 2026."</p>
+          
+          <h4 style="color:#1a3a34; margin:16px 0 10px; font-size:0.95rem;">3. Metas de Resultado/Impacto</h4>
+          <p style="margin-left:16px; font-size:0.9rem; color:#455a64;">Cambios observables en la población. Ejemplo: "Incrementar índice de confianza institucional de 28% a 45% en población joven (18-35 años) medido por encuesta nacional."</p>
+          
+          <h4 style="color:#1a3a34; margin:16px 0 10px; font-size:0.95rem;">4. Metas de Capacidad Institucional</h4>
+          <p style="margin-left:16px; font-size:0.9rem; color:#455a64;">Fortalecimiento organizativo. Ejemplo: "Capacitar a 1,200 servidores públicos en 15 instituciones sobre políticas públicas inclusivas y participativas."</p>
+          
+          <h4 style="color:#1a3a34; margin:16px 0 10px; font-size:0.95rem;">5. Metas de Incidencia en Política Pública</h4>
+          <p style="margin-left:16px; font-size:0.9rem; color:#455a64;">Influencia legislativa. Ejemplo: "Lograr la inclusión de 3 recomendaciones del proyecto en reformas constitucionales o leyes nacionales."</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Criterios SMART para Metas Efectivas</div>
+        <div class="pill-row">
+          <span class="pill pill-primary"><strong>S</strong>pecífico</span>
+          <span class="pill pill-secondary"><strong>M</strong>edible</span>
+          <span class="pill pill-primary"><strong>A</strong>lcanzable</span>
+          <span class="pill pill-secondary"><strong>R</strong>elevante</span>
+          <span class="pill pill-accent"><strong>T</strong>iempo Definido</span>
+        </div>
+        <p style="margin-top:14px; font-size:0.9rem; color:#455a64;"><strong>Ejemplo SMART:</strong> "Incrementar de 8 a 12 políticas públicas con enfoque de género aprobadas por congreso en los próximos 18 meses, medidas mediante auditoría de documentos legislativos."</p>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Ejemplos Prácticos: Metas para Proyecto Nación en Guatemala</div>
+        <ol class="steps-list">
+          <li><strong>Meta Estratégica:</strong> Desarrollar propuesta de identidad nacional compartida que respete diversidad multicultural y sea validada por 10 grupos comunitarios representativos</li>
+          <li><strong>Meta Operativa:</strong> Realizar 8 foros de diálogo nacional en capitales departamentales con participación mínima de 200 personas por foro (sector público, privado, sociedad civil)</li>
+          <li><strong>Meta de Resultado:</strong> Que 65% de participantes reportar aumento en sentido de pertenencia nacional, medido mediante encuesta post-intervención</li>
+          <li><strong>Meta de Capacidad:</strong> Formar red permanente de 50 facilitadores comunitarios entrenados en metodología participativa y resolución de conflictos</li>
+          <li><strong>Meta de Incidencia:</strong> Que gobierno incluya enfoque de participación ciudadana en reforma de política nacional de educación cívica (2026-2027)</li>
+        </ol>
+      </div>
+      <div class="info-box">
+        <span class="info-icon">N</span>
+        <p>Se recomienda formularas entre 4-6 metas principales que sean coherentes con el objetivo general. Cada meta debe ser monitoreable con indicadores claros. Un "Proyecto Nación" requiere metas transformacionales pero realistas: ambiciosas en visión, alcanzables en plazo.</p>
+      </div>
+    </section>
+
+    <!-- FORMULACIÓN DE PREGUNTAS -->
+    <section class="section" id="s-preguntas-inv">
+      <div class="section-header">
+        <div class="section-num secondary">16</div>
+        <div class="section-title-wrap">
+          <h2>Formulación de Preguntas de Investigación</h2>
+          <div class="section-sub">Guías concretas para el estudio</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Son preguntas específicas, claras y directamente relacionadas con el problema. Guían la recolección de datos
+          y revisión de literatura durante toda la investigación.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones</div>
+        <ol class="steps-list">
+          <li>Plantear entre 2 y 4 preguntas derivadas del problema</li>
+          <li>Cada pregunta debe abordar un aspecto distinto del problema</li>
+          <li>Usar verbos: "¿Cómo influye...?", "¿Cuál es el papel de...?"</li>
+          <li>Verificar que cada pregunta sea respondible con la investigación planificada</li>
+        </ol>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>- ¿Cómo influye la educación en la reducción de la violencia entre jóvenes?<br>- ¿Cuál es el papel de los
+          docentes en programas de prevención?<br>- ¿Cómo puede la participación de estudiantes y padres contribuir a la
+          prevención?</p>
+      </div>
+    </section>
+
+    <!-- OBJETIVO GENERAL -->
+    <section class="section" id="s-obj-general">
+      <div class="section-header">
+        <div class="section-num">17</div>
+        <div class="section-title-wrap">
+          <h2>Objetivo General</h2>
+          <div class="section-sub">La meta principal del proyecto</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Enunciado amplio que expresa el propósito central de la investigación. Describe qué quiere lograr el proyecto
+          en su totalidad. Se redacta con un verbo en infinitivo al inicio.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Estructura Recomendada</div>
+        <ol class="steps-list">
+          <li>Iniciar con verbo en infinitivo: analizar, investigar, evaluar, proponer, identificar</li>
+          <li>Describir qué se va a estudiar (el fenómeno/problema)</li>
+          <li>Indicar contexto/población (¿dónde? ¿con quiénes?)</li>
+          <li>Mencionar la finalidad (¿para qué?)</li>
+        </ol>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>Investigar y analizar el impacto de los programas educativos en la prevención de la violencia en institutos
+          nacionales del área urbana de Fraijanes, con el fin de desarrollar estrategias efectivas que promuevan una
+          cultura de paz y respeto por los derechos humanos.</p>
+      </div>
+    </section>
+
+    <!-- OBJETIVOS ESPECÍFICOS -->
+    <section class="section" id="s-obj-especificos">
+      <div class="section-header">
+        <div class="section-num">18</div>
+        <div class="section-title-wrap">
+          <h2>Objetivos Específicos</h2>
+          <div class="section-sub">Pasos medibles hacia la meta</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Son metas concretas, medibles y alcanzables que desglosan el objetivo general. Cada uno aborda un aspecto
+          particular del problema y guía una parte de la investigación.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Criterios SMART</div>
+        <div class="pill-row">
+          <span class="pill pill-primary">Específico</span>
+          <span class="pill pill-secondary">Medible</span>
+          <span class="pill pill-primary">Alcanzable</span>
+          <span class="pill pill-secondary">Realista</span>
+          <span class="pill pill-accent">Con Plazo Definido</span>
+        </div>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>- Evaluar la efectividad de programas educativos existentes y su impacto en la prevención de violencia
+          escolar<br>- Proponer nuevas estrategias educativas para mejorar la prevención y fomentar un ambiente seguro
+        </p>
+      </div>
+      <div class="info-box">
+        <span class="info-icon">N</span>
+        <p>Se recomiendan entre 2 y 4 objetivos específicos. Cada uno debe corresponder a una de las preguntas de
+          investigación formuladas.</p>
+      </div>
+    </section>
+
+    <!-- HIPÓTESIS -->
+    <section class="section" id="s-hipotesis">
+      <div class="section-header">
+        <div class="section-num secondary">19</div>
+        <div class="section-title-wrap">
+          <h2>Hipótesis</h2>
+          <div class="section-sub">Lo que se espera encontrar</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Es una suposición fundamentada sobre lo que se cree que sucederá o se encontrará durante la investigación. Se
+          formula después de revisar la literatura y debe ser comprobable.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones</div>
+        <ol class="steps-list">
+          <li>Basarse en la revisión de literatura (lecturas, artículos, informes)</li>
+          <li>Redactar una afirmación que establezca una relación entre variables</li>
+          <li>Verificar que sea comprobable con la metodología elegida</li>
+          <li>Pueden haber 1-2 hipótesis principales o complementarias</li>
+        </ol>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo</div>
+        <p>La implementación de programas educativos sobre prevención de violencia disminuirá significativamente la
+          incidencia de actos violentos en la comunidad escolar de los institutos del área rural del municipio de
+          Fraijanes, Guatemala.</p>
+      </div>
+    </section>
+
+    <!-- METODOLOGÍA -->
+    <section class="section" id="s-metodologia">
+      <div class="section-header">
+        <div class="section-num accent">20</div>
+        <div class="section-title-wrap">
+          <h2>Metodología de la Investigación</h2>
+          <div class="section-sub">El camino para obtener respuestas</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">¿Qué es Investigar?</div>
+        <p>Investigar es un proceso sistemático y riguroso de búsqueda y análisis de información para comprender un
+          fenómeno, resolver un problema o probar una hipótesis. Implica la aplicación de métodos y técnicas específicas
+          para generar conocimiento confiable.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Propósitos de la Investigación</div>
+        <ul>
+          <li><strong>Descripción:</strong> Conocer cómo es la realidad del problema</li>
+          <li><strong>Explicación:</strong> Comprender las causas y efectos del problema</li>
+          <li><strong>Predicción:</strong> Anticipar posibles escenarios futuros</li>
+          <li><strong>Intervención:</strong> Proponer soluciones concretas</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Tipos de Investigación</div>
+        <table class="apa-table" style="margin-top: 12px;">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Características</th>
+              <th>Ejemplo de Técnica</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cuantitativa</strong></td>
+              <td>Datos numéricos y estadísticos</td>
+              <td>Encuestas, tabulaciones</td>
+            </tr>
+            <tr>
+              <td><strong>Cualitativa</strong></td>
+              <td>Comprensión profunda de fenómenos</td>
+              <td>Entrevistas, observación</td>
+            </tr>
+            <tr>
+              <td><strong>Mixta</strong></td>
+              <td>Combinación de ambos enfoques</td>
+              <td>Encuesta + entrevista</td>
+            </tr>
+            <tr>
+              <td><strong>Documental</strong></td>
+              <td>Revisión de fuentes bibliográficas</td>
+              <td>Libros, artículos, informes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- DESCRIPCIÓN O RELATORÍA -->
+    <section class="section" id="s-descripcion">
+      <div class="section-header">
+        <div class="section-num secondary">21</div>
+        <div class="section-title-wrap">
+          <h2>Descripción o Relatoría de la Acción</h2>
+          <div class="section-sub">Narrativa de actividades de campo</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Es el relato detallado de las actividades prácticas o de campo realizadas como parte de la investigación.
+          Documenta los pasos, interacciones y contextos de cada visita o intervención realizada.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones</div>
+        <ol class="steps-list">
+          <li>Describir cada visita con detalle (fecha, lugar, duración, participantes)</li>
+          <li>Narrar lo sucedido, observaciones e interacciones</li>
+          <li>Relacionar las acciones con los objetivos del proyecto</li>
+          <li>Incluir evidencia fotográfica en anexos</li>
+        </ol>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">Ejemplo de Estructura</div>
+        <p><strong>Primera Visita:</strong> Contacto inicial, presentación del proyecto, recolección de datos
+          preliminares<br><strong>Segunda Visita:</strong> Implementación de talleres, entrevistas, registro de
+          reacciones<br><strong>Tercera Visita:</strong> Seguimiento, evaluación de acciones, recolección de
+          retroalimentación</p>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section class="section" id="s-resultados">
+      <div class="section-header">
+        <div class="section-num accent">22</div>
+        <div class="section-title-wrap">
+          <h2>Resultados de la Acción</h2>
+          <div class="section-sub">Hallazgos de las actividades</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Presenta de forma clara y concisa los datos e información recolectada durante las acciones de campo. Estos
+          resultados responden a las preguntas de investigación y ayudan a verificar o refutar la hipótesis.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones</div>
+        <ol class="steps-list">
+          <li>Organizar resultados según los objetivos o preguntas de investigación</li>
+          <li>Presentar datos cuantitativos (tablas, gráficos) y cualitativos (citas, observaciones)</li>
+          <li>Analizar qué significan los datos; no solo mostrarlos</li>
+          <li>Utilizar lenguaje objetivo</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- CRONOGRAMAS -->
+    <section class="section" id="s-cronogramas">
+      <div class="section-header">
+        <div class="section-num">23</div>
+        <div class="section-title-wrap">
+          <h2>Cronogramas</h2>
+          <div class="section-sub">Planificación temporal de actividades</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Herramientas de gestión que visualizan la secuencia de actividades del proyecto a lo largo del tiempo.
+          Permiten organizar, monitorear y asegurar el cumplimiento de tareas en plazos establecidos.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Tipos de Cronograma</div>
+        <ul>
+          <li><strong>Cronograma General:</strong> Fases principales del proyecto por semana</li>
+          <li><strong>Cronograma por Fecha:</strong> Actividades específicas con fechas exactas y responsables</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PROPUESTA DEL PROYECTO -->
+    <section class="section" id="s-propuesta">
+      <div class="section-header">
+        <div class="section-num accent">24</div>
+        <div class="section-title-wrap">
+          <h2>Propuesta del Proyecto de Nación</h2>
+          <div class="section-sub">Plan concreto para la acción</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Es el corazón del Proyecto de Nación. Presenta las soluciones y acciones concretas propuestas para abordar el
+          problema identificado, alineadas con los objetivos y la Visión de Nación.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Componentes Principales</div>
+        <ul>
+          <li>Justificación de la propuesta</li>
+          <li>Metas (objetivos concretos y medibles)</li>
+          <li>Estrategias (grandes líneas de acción)</li>
+          <li>Plan de acción (actividades específicas, recursos, responsables, plazos)</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <span class="info-icon">N</span>
+        <p>Esta sección es la culminación de todo el proceso de investigación. Se construye sobre el diagnóstico, el
+          marco conceptual y los objetivos previamente establecidos.</p>
+      </div>
+    </section>
+
+    <!-- PLAN DE ACCIÓN -->
+    <section class="section" id="s-plan-accion">
+      <div class="section-header">
+        <div class="section-num">25</div>
+        <div class="section-title-wrap">
+          <h2>Plan de Acción</h2>
+          <div class="section-sub">Definición y estructura operativa</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">¿Qué es un Plan de Acción?</div>
+        <p>Un Plan de Acción es el documento que responde a la pregunta: "¿Exactamente QUÉ vamos a hacer para resolver el problema que identificamos?" No es teoría. No es diagnóstico. Es acción concreta y operativa.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Definición Simple</div>
+        <p>Es el paso de "sabemos cuál es el problema" a "aquí está exactamente qué hacemos para resolverlo". Transforma objetivos abstractos en actividades específicas, medibles, responsables y con plazo.</p>
+      </div>
+      <div class="card">
+        <div class="card-label accent">Estructura Básica de un Plan de Acción</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <h4>ESTRATEGIA 1: [Nombre de estrategia general]</h4>
+            <p><strong>├─ ACTIVIDAD 1.1:</strong> Acción específica concreta<br/>
+            <strong>│  ├─ Responsable:</strong> Quién la hace<br/>
+            <strong>│  ├─ Plazo:</strong> Cuándo<br/>
+            <strong>│  ├─ Recursos:</strong> Con qué<br/>
+            <strong>│  ├─ Costo:</strong> Cuánto cuesta<br/>
+            <strong>│  └─ Indicador de éxito:</strong> Cómo medimos si funcionó</p>
+          </div>
+          <div class="tl-item">
+            <h4>ESTRATEGIA 2: [Nombre de estrategia general]</h4>
+            <p><strong>├─ ACTIVIDAD 2.1, 2.2, 2.3...</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Elementos Obligatorios de Cada Actividad</div>
+        <ol class="steps-list">
+          <li><strong>¿QUÉ?</strong> = Descripción específica de qué se hará</li>
+          <li><strong>¿QUIÉN?</strong> = Responsable específico</li>
+          <li><strong>¿CUÁNDO?</strong> = Fecha/plazo concreto</li>
+          <li><strong>¿DÓNDE?</strong> = Ubicación geográfica</li>
+          <li><strong>¿CON QUÉ?</strong> = Recursos necesarios (materiales, dinero)</li>
+          <li><strong>¿CUÁNTO CUESTA?</strong> = Presupuesto específico</li>
+          <li><strong>¿CÓMO MEDIMOS?</strong> = Indicador de éxito (número, porcentaje)</li>
+          <li><strong>¿PARA QUÉ?</strong> = Objetivo final (qué logra esta actividad)</li>
+        </ol>
+      </div>
+      <div class="example-block">
+        <div class="ex-label">NO es Plan de Acción</div>
+        <p>❌ "Mejorar participación indígena" (vago)<br/>
+        ❌ "Hacer talleres" (sin especificar)<br/>
+        ❌ "Trabajar con comunidades" (sin detalle)<br/>
+        ❌ "Cambiar educación" (sin cómo)</p>
+      </div>
+      <div class="example-block" style="background: #e8f5e9; border-left-color: var(--secondary);">
+        <div class="ex-label" style="color: var(--secondary);">SÍ es Plan de Acción</div>
+        <p>✓ "Realizar 5 asambleas mensuales en comunidades específicas con 40+ personas cada una, en idioma maya, responsabilidad de líder XYZ, costo Q1,000/mes, indicador: 60% asistencia"<br/><br/>
+        ✓ "Capacitar 30 maestros en 3 talleres de 3 días, semanas 12-14, evaluando comprensión de nuevo currículo"<br/><br/>
+        ✓ "Crear cartilla bilingüe de 20 páginas en 4 semanas, validada por 5 maestros indígenas, distribuir 500 copias"<br/><br/>
+        ✓ "Presentación pública semana 32 con 150+ personas, medios de prensa, para incidir en política de MINEDUC"</p>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Instrucciones para Desarrollar el Plan de Acción</div>
+        <ol class="steps-list">
+          <li>Identificar el problema concreto a resolver (del diagnóstico)</li>
+          <li>Definir 3-4 grandes estrategias de solución</li>
+          <li>Para cada estrategia, desglosar en 3-4 actividades específicas</li>
+          <li>Para cada actividad, completar los 8 elementos obligatorios</li>
+          <li>Asegurar que cada indicador sea medible (números, porcentajes, observables)</li>
+          <li>Verificar que plazos sean realistas y coherentes</li>
+          <li>Presupuestar cada actividad de forma detallada</li>
+          <li>Presentar en formato visual (cuadro, árbol, diagrama)</li>
+        </ol>
+      </div>
+      <div class="info-box">
+        <span class="info-icon">N</span>
+        <p><strong>Diferencia clave:</strong> Un Plan de Acción no es un simple listado de actividades. Es un documento estratégico que especifica EXACTAMENTE cómo se resolverá el problema, con responsables, fechas, recursos y medidas de éxito verificables.</p>
+      </div>
+    </section>
+
+    <!-- CONCLUSIONES -->
+    <section class="section" id="s-conclusiones">
+      <div class="section-header">
+        <div class="section-num accent">26</div>
+        <div class="section-title-wrap">
+          <h2>Conclusiones y Recomendaciones</h2>
+          <div class="section-sub">Cierre reflexivo del proyecto</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Conclusiones</div>
+        <p>Son los hallazgos más relevantes y las respuestas definitivas a las preguntas de investigación. Sintetizan lo
+          aprendido y confirman o refutan la hipótesis inicial.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones para Conclusiones</div>
+        <ol class="steps-list">
+          <li>Redactar 3 a 5 conclusiones claras, directas y numeradas</li>
+          <li>Cada conclusión responde a un objetivo específico</li>
+          <li>Indicar si la hipótesis fue confirmada o refutada</li>
+          <li>No introducir nueva información o citas</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Recomendaciones</div>
+        <p>Son sugerencias prácticas dirigidas a diferentes actores (autoridades, docentes, estudiantes, padres) para
+          que tomen acciones concretas que mejoren la situación estudiada.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones para Recomendaciones</div>
+        <ol class="steps-list">
+          <li>Formular recomendaciones realistas y accionables</li>
+          <li>Dirigir cada recomendación a un actor específico</li>
+          <li>Basar en las conclusiones obtenidas</li>
+          <li>Pueden incluir continuidad o ampliación del proyecto</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- REFERENCIAS -->
+    <section class="section" id="s-referencias">
+      <div class="section-header">
+        <div class="section-num">27</div>
+        <div class="section-title-wrap">
+          <h2>Referencias</h2>
+          <div class="section-sub">Fuentes en formato APA 7ª edición</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Lista completa y ordenada alfabéticamente de todas las fuentes documentales consultadas y citadas en el
+          informe. Su propósito es dar crédito a los autores originales y permitir verificación de información.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Instrucciones</div>
+        <ol class="steps-list">
+          <li>Incluir solo las fuentes citadas en el texto</li>
+          <li>Organizar alfabéticamente por apellido del primer autor</li>
+          <li>Utilizar formato APA 7ª edición de manera estricta</li>
+          <li>Aplicar sangría francesa a cada entrada</li>
+          <li>Usar la función bibliográfica automática de Word</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ANEXOS -->
+    <section class="section" id="s-anexos">
+      <div class="section-header">
+        <div class="section-num">28</div>
+        <div class="section-title-wrap">
+          <h2>Anexos</h2>
+          <div class="section-sub">Materiales complementarios</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label primary">Descripción</div>
+        <p>Documentos o materiales adicionales que, aunque no forman parte del cuerpo principal, son relevantes para el
+          estudio. Incluyen evidencias, instrumentos, materiales de apoyo y resultados de campo.</p>
+      </div>
+      <div class="card">
+        <div class="card-label secondary">Materiales Comunes en Anexos</div>
+        <ul>
+          <li>Lista de cotejo de evaluación docente</li>
+          <li>Materiales de lectura para estudiantes</li>
+          <li>Fichas de trabajo sobre temas específicos</li>
+          <li>Guía para insertar referencias en formato APA</li>
+          <li>Formato para plan de acción</li>
+          <li>Formato para plan de actividades</li>
+          <li>Sugerencias para adecuaciones curriculares</li>
+          <li>Evidencia fotográfica de actividades</li>
+          <li>Transcripciones de entrevistas</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- APA SECTION -->
+    <section id="apa-section">
+      <div class="apa-header">
+        <div class="apa-icon-wrap">A</div>
+        <div>
+          <h2>Normas APA 7ª Edición <span class="apa-badge">Obligatorio</span></h2>
+          <div style="font-size:0.8rem; font-family:sans-serif; color:var(--text-light); margin-top:4px;">Formato Word y
+            Procedimientos Técnicos</div>
+        </div>
+      </div>
+
+      <div class="mandatory-box">
+        <h3>Instrucción Obligatoria</h3>
+        <p>Todo el proyecto debe desarrollarse en computadora utilizando <strong>Microsoft Word</strong> u otro
+          procesador compatible. Configuración obligatoria: <strong>márgenes 2.54 cm</strong>, fuente <strong>Times New
+            Roman 12 pts</strong>, interlineado <strong>2.0</strong>, <strong>sangría francesa en bibliografía</strong>.
+          Guardar en formato <strong>.docx</strong> y respaldar en la nube.</p>
+      </div>
+
+      <h3
+        style="font-family:'Segoe UI',sans-serif; font-size:1.1rem; margin:24px 0 14px; color:var(--text-dark); font-weight:600;">
+        Configuración Obligatoria en Word</h3>
+      <div class="config-grid">
+        <div class="config-item"><span class="ci-val">2.54 cm</span><span class="ci-label">Márgenes</span></div>
+        <div class="config-item"><span class="ci-val">12 pts</span><span class="ci-label">Tamaño de Fuente</span></div>
+        <div class="config-item"><span class="ci-val">2.0</span><span class="ci-label">Interlineado</span></div>
+        <div class="config-item"><span class="ci-val">Times New Roman</span><span class="ci-label">Fuente
+            Obligatoria</span></div>
+        <div class="config-item"><span class="ci-val">.docx</span><span class="ci-label">Formato de Guardado</span>
+        </div>
+        <div class="config-item"><span class="ci-val">Nube</span><span class="ci-label">Respaldo Obligatorio</span>
+        </div>
+      </div>
+
+      <h3
+        style="font-family:'Segoe UI',sans-serif; font-size:1.1rem; margin:28px 0 14px; color:var(--text-dark); font-weight:600;">
+        APA 7ª Edición: Guía Rápida por Tipo de Fuente</h3>
+
+      <table class="apa-table">
+        <thead>
+          <tr>
+            <th>Tipo de Fuente</th>
+            <th>Formato APA 7ª Ed.</th>
+            <th>Ejemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Libro</strong></td>
+            <td><code>Apellido, N. (Año). Título en cursiva. Editorial.</code></td>
+            <td>Pérez, J. (2020). Desarrollo sostenible en Guatemala. Editorial Universitaria.</td>
+          </tr>
+          <tr>
+            <td><strong>Artículo de revista</strong></td>
+            <td><code>Autor. (Año). Título. Revista, vol(núm), pp.</code></td>
+            <td>López, M. (2021). Impacto de educación. Revista de Estudios, 15(2), 123–135.</td>
+          </tr>
+          <tr>
+            <td><strong>Página Web</strong></td>
+            <td><code>Autor. (Año). Título. Sitio Web. URL</code></td>
+            <td>ONU. (2024). Informe sobre desarrollo. https://www.onu.org</td>
+          </tr>
+          <tr>
+            <td><strong>Cita en texto</strong></td>
+            <td><code>(Autor, año, p. X) o Autor (año)</code></td>
+            <td>(López, 2021) o López (2021) señaló que...</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card" style="margin-top:22px;">
+        <div class="card-label secondary">Recomendaciones para Evitar Plagios</div>
+        <ul>
+          <li><strong>Siempre citar:</strong> Cualquier idea, dato o texto de un autor debe citarse</li>
+          <li><strong>Comillas directas:</strong> Si cita textualmente, incluir comillas y número de página</li>
+          <li><strong>Paráfrasis:</strong> Cambiar palabras pero citar la fuente. Una paráfrasis sin cita es plagio</li>
+          <li><strong>Conocimiento común:</strong> Hechos ampliamente conocidos pueden usarse sin cita</li>
+        </ul>
+      </div>
+
+      <h3
+        style="font-family:'Segoe UI',sans-serif; font-size:1.1rem; margin:28px 0 14px; color:var(--text-dark); font-weight:600;">
+        Checklist Final para Entrega</div>
+
+        <div
+          style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:32px;">
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Márgenes 2.54 cm
+          </div>
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Fuente Times New Roman 12
+          </div>
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Interlineado 2.0
+          </div>
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Números de página
+          </div>
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Portada completa
+          </div>
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Índice automático
+          </div>
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Referencias APA
+          </div>
+          <div
+            style="background:var(--primary-pale); border-radius:4px; padding:14px; border:1px solid var(--primary);">
+            <input type="checkbox" style="margin-right:8px;"> Sin plagios
+          </div>
+        </div>
+    </section>
+
+    <footer>
+      <strong>Proyecto Nación 2026</strong><br>
+      I created this manual for you to enjoy and share. it’s free!!<br>
+      <span style="font-size:0.72rem; color:var(--text-light);">with ❤️ by lizagarmi 2026</span>
+    </footer>
+
+  </main>
+
+  <script>
+    /* ── DRAG & DROP ── */
+    (function () {
+      const navList = document.getElementById('navList');
+      const mainEl = document.getElementById('main');
+      let dragSrc = null;
+
+      // Build a map: sectionId -> section element
+      function getSectionMap() {
+        const map = {};
+        mainEl.querySelectorAll('section[id], section#apa-section').forEach(s => { map[s.id] = s; });
+        return map;
+      }
+
+      // Reorder sections in main to match sidebar order
+      function syncMain() {
+        const items = navList.querySelectorAll('li.draggable-item');
+        const map = getSectionMap();
+        // fixed anchors: hero (#inicio) and divider and apa stay last
+        const heroSection = document.getElementById('inicio');
+        const divider = mainEl.querySelector('hr.divider');
+        const apaSection = document.getElementById('apa-section');
+        const footer = mainEl.querySelector('footer');
+
+        items.forEach(li => {
+          const id = li.dataset.target;
+          const sec = map[id];
+          if (sec && divider) {
+            mainEl.insertBefore(sec, divider);
+          }
+        });
+      }
+
+      // ── Mouse Drag ──
+      navList.addEventListener('dragstart', function (e) {
+        const li = e.target.closest('li.draggable-item');
+        if (!li) { e.preventDefault(); return; }
+        dragSrc = li;
+        li.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', li.dataset.target);
+      });
+
+      navList.addEventListener('dragend', function (e) {
+        navList.querySelectorAll('li').forEach(l => l.classList.remove('dragging', 'drag-over'));
+        dragSrc = null;
+      });
+
+      navList.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const li = e.target.closest('li.draggable-item');
+        navList.querySelectorAll('li').forEach(l => l.classList.remove('drag-over'));
+        if (li && li !== dragSrc) li.classList.add('drag-over');
+      });
+
+      navList.addEventListener('drop', function (e) {
+        e.preventDefault();
+        const li = e.target.closest('li.draggable-item');
+        if (!li || li === dragSrc || !dragSrc) return;
+
+        const items = [...navList.querySelectorAll('li.draggable-item')];
+        const srcIdx = items.indexOf(dragSrc);
+        const tgtIdx = items.indexOf(li);
+
+        if (srcIdx < tgtIdx) {
+          navList.insertBefore(dragSrc, li.nextSibling);
+        } else {
+          navList.insertBefore(dragSrc, li);
+        }
+        navList.querySelectorAll('li').forEach(l => l.classList.remove('drag-over'));
+        syncMain();
+        updateSectionNumbers();
+      });
+
+      // ── Touch Drag ──
+      let touchItem = null, touchClone = null, touchOffX = 0, touchOffY = 0;
+
+      navList.addEventListener('touchstart', function (e) {
+        const handle = e.target.closest('.drag-handle');
+        if (!handle) return;
+        const li = handle.closest('li.draggable-item');
+        if (!li) return;
+        touchItem = li;
+        const rect = li.getBoundingClientRect();
+        touchOffX = e.touches[0].clientX - rect.left;
+        touchOffY = e.touches[0].clientY - rect.top;
+        touchClone = li.cloneNode(true);
+        touchClone.style.cssText = `position:fixed;width:${rect.width}px;opacity:0.75;pointer-events:none;z-index:9999;background:#1a3a34;border-radius:4px;list-style:none;`;
+        touchClone.style.left = (e.touches[0].clientX - touchOffX) + 'px';
+        touchClone.style.top = (e.touches[0].clientY - touchOffY) + 'px';
+        document.body.appendChild(touchClone);
+        li.classList.add('dragging');
+      }, { passive: true });
+
+      document.addEventListener('touchmove', function (e) {
+        if (!touchItem || !touchClone) return;
+        e.preventDefault();
+        const tx = e.touches[0].clientX;
+        const ty = e.touches[0].clientY;
+        touchClone.style.left = (tx - touchOffX) + 'px';
+        touchClone.style.top = (ty - touchOffY) + 'px';
+
+        navList.querySelectorAll('li').forEach(l => l.classList.remove('drag-over'));
+        const elBelow = document.elementFromPoint(tx, ty);
+        const li = elBelow ? elBelow.closest('li.draggable-item') : null;
+        if (li && li !== touchItem) li.classList.add('drag-over');
+      }, { passive: false });
+
+      document.addEventListener('touchend', function (e) {
+        if (!touchItem) return;
+        const tx = e.changedTouches[0].clientX;
+        const ty = e.changedTouches[0].clientY;
+        if (touchClone) { touchClone.remove(); touchClone = null; }
+        touchItem.classList.remove('dragging');
+
+        const elBelow = document.elementFromPoint(tx, ty);
+        const target = elBelow ? elBelow.closest('li.draggable-item') : null;
+        if (target && target !== touchItem) {
+          const items = [...navList.querySelectorAll('li.draggable-item')];
+          const srcIdx = items.indexOf(touchItem);
+          const tgtIdx = items.indexOf(target);
+          if (srcIdx < tgtIdx) navList.insertBefore(touchItem, target.nextSibling);
+          else navList.insertBefore(touchItem, target);
+          syncMain();
+          updateSectionNumbers();
+        }
+        navList.querySelectorAll('li').forEach(l => l.classList.remove('drag-over'));
+        touchItem = null;
+      }, { passive: true });
+    })();
+    /* ── END DRAG & DROP ── */
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    if (menuToggle) {
+      menuToggle.addEventListener('click', function () {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', function () {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      });
+    }
+
+    const navLinks = document.querySelectorAll('#navList a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      });
+    });
+
+    const searchInput = document.getElementById('searchInput');
+    const searchCount = document.getElementById('searchCount');
+    let allHighlights = [];
+
+    function removeHighlights() {
+      allHighlights.forEach(el => {
+        const text = el.textContent;
+        const parent = el.parentNode;
+        parent.replaceChild(document.createTextNode(text), el);
+        parent.normalize();
+      });
+      allHighlights = [];
+    }
+
+    function updateSectionNumbers() {
+      const items = navList.querySelectorAll('li.draggable-item');
+      items.forEach((li, idx) => {
+        const targetId = li.dataset.target;
+        const section = document.getElementById(targetId);
+        if (section) {
+          const numDiv = section.querySelector('.section-num');
+          if (numDiv) {
+            numDiv.textContent = idx + 1;
+          }
+        }
+      });
+    }
+
+    function highlightText(query) {
+      removeHighlights();
+      const navItems = navList.querySelectorAll('li.draggable-item');
+
+      if (query.length < 2) {
+        searchCount.style.display = 'none';
+        navItems.forEach(item => item.style.display = '');
+        return;
+      }
+
+      // Filtrar sidebar para mostrar solo coincidencias
+      const queryLower = query.toLowerCase();
+      navItems.forEach(item => {
+        const link = item.querySelector('a');
+        const text = link ? link.textContent.toLowerCase() : '';
+        item.style.display = text.includes(queryLower) ? '' : 'none';
+      });
+
+      const regex = new RegExp(`(${query})`, 'gi');
+      const walker = document.createTreeWalker(
+        document.getElementById('main'),
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+      );
+
+      let node;
+      const nodesToReplace = [];
+
+      while (node = walker.nextNode()) {
+        if (regex.test(node.textContent)) {
+          nodesToReplace.push(node);
+          regex.lastIndex = 0;
+        }
+      }
+
+      nodesToReplace.forEach(node => {
+        const span = document.createElement('span');
+        span.innerHTML = node.textContent.replace(regex, '<mark class="search-hl">$1</mark>');
+        node.parentNode.replaceChild(span, node);
+
+        span.querySelectorAll('mark.search-hl').forEach(mark => {
+          allHighlights.push(mark);
+        });
+      });
+
+      searchCount.textContent = `${allHighlights.length} resultado${allHighlights.length !== 1 ? 's' : ''}`;
+      searchCount.style.display = allHighlights.length > 0 ? 'block' : 'none';
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        highlightText(this.value);
+      });
+    }
+
+    document.addEventListener('keydown', function (event) {
+      const scrollAmount = 300;
+
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        window.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        window.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
+      }
+    });
+
+    window.addEventListener('scroll', function () {
+      const sections = document.querySelectorAll('section[id]');
+      let currentSection = '';
+
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 150) {
+          currentSection = section.id;
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + currentSection) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
